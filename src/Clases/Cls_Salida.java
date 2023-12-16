@@ -181,11 +181,6 @@ public class Cls_Salida {
     public void actualizarSalida(Object[] salida){
         try  {
             
-//            String query = "UPDATE salida SET "
-//                + "sal_pro_codigo = '"+salida[1]+"', "
-//                + "sal_cantidad = "+ Integer.valueOf(salida[3].toString()) +", "
-//                + "sal_fecha = '"+salida[2]+"' "
-//                + "WHERE sal_factura = '"+salida[0] +"'";
             String query= "UPDATE salida SET sal_fecha = ?, sal_pro_codigo = ?, sal_cantidad = ? where sal_factura = ?";
             PS = CN.getConnection().prepareCall(query);
             PS.setString(2, salida[1].toString()); //codigo producto

@@ -170,13 +170,17 @@ public class Cls_OrdenTrabajo {
                 //Se esta sacando mas/menos del mismo producto
                 if(cantVieja > cantNueva){
                 //Si la cantidad vieja es mayor a la nueva. Devuelvo Stock
-                    int cantDevolver = cantVieja - cantNueva;
                     //Obteniendo la cantidad de stock actual
                     Object[] cantInventarioActual = clsInventario.getInventarioxProducto(prodViejo);
-                    cantDevolver = Integer.parseInt(cantInventarioActual[1].toString()) + cantDevolver;
                     
+                    
+                    int cantDevolver = cantVieja - cantNueva;
                     //recalculo la cantidad de salidas, retandole la cant a devolver
-                    int nuevaCantSalida =  cantDevolver - Integer.parseInt(cantInventarioActual[1].toString())  ;
+                    
+                    int nuevaCantSalida =  Integer.parseInt(cantInventarioActual[1].toString()) - cantDevolver ;
+                    
+                    cantDevolver = Integer.parseInt(cantInventarioActual[2].toString()) + cantDevolver;
+                    
 
                     //Devolviendo Stock
                     clsInventario.ActualizarInventario(prodViejo, cantDevolver, nuevaCantSalida);
@@ -186,7 +190,7 @@ public class Cls_OrdenTrabajo {
                     //Si la cantidad vieja es mayor a la nueva. Retiro mas Stock
                     int cantExtra = cantNueva - cantVieja;
                     int stock = clsSalida.verificarStock(prodViejo);
-                    if(stock >  cantExtra){
+                    if(stock >=  cantExtra){
                         clsSalida.actualizarSalida(salidaDespuesActualizar);
                     }else{
                         throw new Exception("No hay suficiente stock para actualizar el pedido");
@@ -196,12 +200,14 @@ public class Cls_OrdenTrabajo {
                 //Se busca cambiar el producto y por lo tanto se debe devolver Stock
                 
                 //Obtengo el stock del producto viejo para sumarlo con el que se esta devolviendo
-                Object[] cantInventarioActual = clsInventario.getInventarioxProducto(prodNuevo);
+                Object[] cantInventarioActual = clsInventario.getInventarioxProducto(prodViejo);
+                
+                //sumo la cantidad vieja con el stock del prducto viejo para obtener el nuevo stock real
                 int cantDevolver = Integer.parseInt(cantInventarioActual[2].toString()) + cantVieja;
                 
                 
-                //recalculo la cantidad de salidas, retandole la cant a devolver
-                int nuevaCantSalida = cantDevolver - Integer.parseInt(cantInventarioActual[1].toString()) ;
+                //recalculo la cantidad de salidas, retandole la cantidad
+                int nuevaCantSalida = Integer.parseInt(cantInventarioActual[1].toString()) - cantVieja;
                 
                 
                 //Devuelvo todo el stock del anterior producto solicitado
@@ -209,8 +215,18 @@ public class Cls_OrdenTrabajo {
                 
                 //verifico el stock de este nuevo producto
                 int stock = clsSalida.verificarStock(prodNuevo);
-                if(stock > cantNueva){
+                if(stock >= cantNueva){
                     clsSalida.actualizarSalida(salidaDespuesActualizar);
+                    
+                    Object[] cantInvetarioNuevoProducto =  clsInventario.getInventarioxProducto(prodNuevo);
+                    
+                    //actualizando el stock del nuevo prodcuto
+                    int cantNuevoStock = Integer.parseInt(cantInvetarioNuevoProducto[2].toString()) - cantNueva;
+                    
+                    int cantNuevaSalida = Integer.parseInt(cantInvetarioNuevoProducto[1].toString()) + cantNueva;
+                    
+                    clsInventario.ActualizarInventario(prodNuevo, cantNuevoStock, cantNuevaSalida);
+
                 }else{
                     throw new Exception("No hay suficiente stock del nuevo producto solicitado para actualizar el pedido");
                 }
