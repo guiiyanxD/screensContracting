@@ -39,6 +39,7 @@ public class Frm_BuscarOrdenDeTrabajo extends javax.swing.JInternalFrame {
     String nroOrden = "";
     public static int enviar = 0;
     int num = 0;
+    String nota = " ";
     Frm_OrdenDeTrabajo1 formularioAgregar = new Frm_OrdenDeTrabajo1();
 
     ArrayList<Object[]> listaDeSalidas = new ArrayList<Object[]>();
@@ -255,7 +256,7 @@ public class Frm_BuscarOrdenDeTrabajo extends javax.swing.JInternalFrame {
             
             Paragraph parrafo = new Paragraph();
             parrafo.setAlignment(Chunk.ALIGN_CENTER);
-            parrafo.add("Orden de Trabajo \n \n");
+            parrafo.add("Orden de Trabajo Nro "+ this.nroOrden+" \n \n");
             parrafo.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY));
             
             documento.setPageSize(PageSize.LETTER);
@@ -271,7 +272,7 @@ public class Frm_BuscarOrdenDeTrabajo extends javax.swing.JInternalFrame {
             tablaShowOrden.addCell("Codigo del Producto");
             tablaShowOrden.addCell("Cantidad");
             tablaShowOrden.addCell("Fecha");
-            
+
 //            tablaShowOrden.setHeaderRows(encabezadoDeTabla);
             
             for(int fila = 0; fila < jbt_show_orden.getRowCount(); fila++){
@@ -283,7 +284,13 @@ public class Frm_BuscarOrdenDeTrabajo extends javax.swing.JInternalFrame {
 
                 
             }
+            Paragraph notaFooter = new Paragraph();
+            notaFooter.setAlignment(Chunk.ALIGN_CENTER);
+            notaFooter.add("Nota:"+this.nota);
+            notaFooter.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY));
+            
             documento.add(tablaShowOrden);
+            documento.add(notaFooter);
             documento.close();
             JOptionPane.showMessageDialog(null, "Documento generado exitosamente");
         
@@ -302,8 +309,8 @@ public class Frm_BuscarOrdenDeTrabajo extends javax.swing.JInternalFrame {
                 Object nroOrden = jbt_index_ordenes.getValueAt(filaSeleccionada, 0); //Devuelve un String
                 this.nroOrden = nroOrden.toString();
                 jbt_show_orden.setModel(clsOrdenTrabajo.showOrdenTrabajo((String)nroOrden));
-
-            }            
+                this.nota = jbt_index_ordenes.getValueAt(filaSeleccionada, 1).toString();
+            }  
         }
     }//GEN-LAST:event_jbt_index_ordenesMouseClicked
 

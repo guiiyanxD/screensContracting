@@ -198,7 +198,7 @@ public class Frm_OrdenDeTrabajo1 extends javax.swing.JInternalFrame {
     }
 
     private void registrarOrdenDeTrabajo(){
-        String nota = txt_nota.getText();
+        String nota = jTextField1.getText();
         clsOrdenTrabajo.registrarOrdenDeTrabajo(nota, listaDeSalidas, this.nroOrden);
         this.nroOrden = " ";
         limpiar();

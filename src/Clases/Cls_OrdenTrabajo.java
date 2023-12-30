@@ -168,14 +168,14 @@ public class Cls_OrdenTrabajo {
             
             if( prodViejo.equals(prodNuevo)){
                 //Se esta sacando mas/menos del mismo producto
-                if(cantVieja > cantNueva){
+                if(cantVieja > cantNueva){ //50, 40
                 //Si la cantidad vieja es mayor a la nueva. Devuelvo Stock
                     //Obteniendo la cantidad de stock actual
                     Object[] cantInventarioActual = clsInventario.getInventarioxProducto(prodViejo);
                     
                     
                     int cantDevolver = cantVieja - cantNueva;
-                    //recalculo la cantidad de salidas, retandole la cant a devolver
+                    //recalculo la cantidad de salidas, restandole la cant a devolver
                     
                     int nuevaCantSalida =  Integer.parseInt(cantInventarioActual[1].toString()) - cantDevolver ;
                     
@@ -190,6 +190,12 @@ public class Cls_OrdenTrabajo {
                     //Si la cantidad vieja es mayor a la nueva. Retiro mas Stock
                     int cantExtra = cantNueva - cantVieja;
                     int stock = clsSalida.verificarStock(prodViejo);
+                    
+                    //Obteniendo la cantidad de stock actual
+                    Object[] cantInventarioActual = clsInventario.getInventarioxProducto(prodViejo);
+                    int nuevoSotck = Integer.parseInt(cantInventarioActual[2].toString()) - cantExtra;
+                    int nuevaCantSalida = Integer.parseInt(cantInventarioActual[1].toString()) + cantExtra;
+                    clsInventario.ActualizarInventario(prodViejo, nuevoSotck, nuevaCantSalida );
                     if(stock >=  cantExtra){
                         clsSalida.actualizarSalida(salidaDespuesActualizar);
                     }else{
